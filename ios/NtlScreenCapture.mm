@@ -5,14 +5,29 @@ RCT_EXPORT_MODULE()
 
 // Example method
 // See // https://reactnative.dev/docs/native-modules-ios
-RCT_REMAP_METHOD(multiply,
-                 multiplyWithA:(double)a withB:(double)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
-{
-    NSNumber *result = @(a * b);
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"onCapture"];
+}
 
-    resolve(result);
+- (void)startObserving {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenCapturedDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendNotificationToRN) name:UIScreenCapturedDidChangeNotification object:nil];
+}
+
+- (void)stopObserving {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)sendNotificationToRN:(NSNotification *)notification {
+    BOOL isCaptured = [[UIScreen mainScreen] isCaptured];
+
+    if (isCaptured) {
+        [self sendEventWithName:notification.name
+                       body:@NO];
+    } else {
+        [self sendEventWithName:notification.name
+                       body:@YES];
+    }
 }
 
 // Don't compile this code when we build for the old architecture.

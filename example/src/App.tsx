@@ -1,18 +1,26 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-ntl-screen-capture';
+import { addScreenCaptureListener } from 'react-native-ntl-screen-capture';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    const unsub = addScreenCaptureListener(doSomething);
+    return () => {
+      unsub();
+    };
   }, []);
+
+  const doSomething = (params: boolean) => {
+    console.log('capture: ', params);
+    setResult(params);
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {result ? 'true' : 'false'}</Text>
     </View>
   );
 }

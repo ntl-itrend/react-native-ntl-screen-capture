@@ -1,12 +1,13 @@
+#import <React/RCTEventEmitter.h>
 
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNNtlScreenCaptureSpec.h"
 
-@interface NtlScreenCapture : NSObject <NativeNtlScreenCaptureSpec>
+@interface NtlScreenCapture : RCTEventEmitter <NativeNtlScreenCaptureSpec>
 #else
 #import <React/RCTBridgeModule.h>
 
-@interface NtlScreenCapture : NSObject <RCTBridgeModule>
+@interface NtlScreenCapture : RCTEventEmitter <RCTBridgeModule>
 #endif
 
 @end
