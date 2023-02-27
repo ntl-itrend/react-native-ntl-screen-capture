@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE()
 
 - (void)startObserving {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenCapturedDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendNotificationToRN) name:UIScreenCapturedDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sendNotificationToRN:) name:UIScreenCapturedDidChangeNotification object:nil];
 }
 
 - (void)stopObserving {
